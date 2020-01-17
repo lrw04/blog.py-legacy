@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    <title>{name} - 博客 - {title}</title>
+    <script>window.texme = { style: 'none' }</script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
+</head>
+
+<body>
+    <p><a href="../">回到首页</a></p>
+    <p>类别：<a href="../{category}">{category}</a></p>
+
+    <textarea>
+{md}
+    </textarea>
+    <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+    <script>
+        function waitForElementToDisplay(selector, time) {
+            if (document.querySelector(selector) != null) {
+                document.body.insertAdjacentHTML('beforeend', "<a href=\"../\">回到首页</a> <a href=\"#\">回到页首</a>");
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+                return;
+            } else {
+                setTimeout(function () {
+                    waitForElementToDisplay(selector, time);
+                }, time);
+            }
+        }
+        waitForElementToDisplay('main', 10);
+    </script>
+</body>
+
+</html>
