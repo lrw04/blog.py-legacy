@@ -73,7 +73,7 @@ def makecatindex(wd, cfg, category, articles):
 
 def makeindex(wd, cfg, jobs, index):
     print('index.html')
-    index.sort(key=lambda ent: (wd / 'docs' / (ent + '.md')).stat().st_ctime, reverse=True)
+    index.sort(key=lambda ent: (wd / 'docs' / (ent + '.md')).stat().st_mtime, reverse=True)
     with open(wd / 'site' / 'index.html', 'w', encoding='utf-8') as f:
         f.write(cfg['home'].format(
             name=cfg['name'],
