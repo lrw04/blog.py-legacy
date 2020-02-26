@@ -1,5 +1,5 @@
 # blog.py
-A static blog generator
+A static blog generator.
 
 ## Usage
 Download `blog.py` from repository. Run `blog.py`. Drag folder with files to the terminal window and press enter.
