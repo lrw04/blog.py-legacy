@@ -15,6 +15,7 @@ config/
 docs/
   <categories>/
     <articles>.md
+static/                 - Static files, will be present in ../static
 ```
 
 ### Templating

@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import sys
+import shutil
 
 def grabjobs(wd):
     jobs = {}
@@ -123,6 +124,7 @@ def generate(wd, jobs):
         makecatindex(wd, cfg, category, articles)
         index += [category + '/' + article for article in articles]
     makeindex(wd, cfg, jobs, index)
+    shutil.copytree(wd / 'static', wd / 'site' / 'static', dirs_exist_ok=True)
 
 def main():
     try:
