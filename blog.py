@@ -61,10 +61,17 @@ def cvtarticle(cfg, src, dst, category, title):
 def makecatindex(wd, cfg, category, articles):
     print('{cat}/index.html'.format(cat=category))
     with open(wd / 'site' / category / 'index.html', 'w', encoding='utf-8') as f:
-        f.write(cfg['category'].format(
-            name=cfg['name'],
-            category=category,
-            articles='\n'.join([
+        f.write(cfg['category']#.format(
+            # name=cfg['name'],
+            # category=category,
+            # articles='\n'.join([
+            #     '<li><a href="{art}.html">{art}</a></li>'.format(
+            #         art=article
+            #     ) for article in articles
+            # ])
+            .replace('{name}', cfg['name'])
+            .replace('{category}', category)
+            .replace('{articles}', '\n'.join([
                 '<li><a href="{art}.html">{art}</a></li>'.format(
                     art=article
                 ) for article in articles
@@ -75,19 +82,30 @@ def makeindex(wd, cfg, jobs, index):
     print('index.html')
     index.sort(key=lambda ent: (wd / 'docs' / (ent + '.md')).stat().st_mtime, reverse=True)
     with open(wd / 'site' / 'index.html', 'w', encoding='utf-8') as f:
-        f.write(cfg['home'].format(
-            name=cfg['name'],
-            categories='\n'.join(
+        f.write(cfg['home']#.format(
+            # name=cfg['name'],
+            # categories='\n'.join(
+            #     '<li><a href="{cat}/">{cat}</a></li>'.format(
+            #         cat=category
+            #     ) for category in jobs.keys()
+            # ),
+            # articles='\n'.join(
+            #     '<li><a href="{ent}.html">{art} ({cat})</a></li>'.format(
+            #         ent=entry, art=entry.split('/')[-1], cat=entry.split('/')[-2]
+            #     ) for entry in index
+            # )
+            .replace('{name}', cfg['name'])
+            .replace('{categories}', '\n'.join(
                 '<li><a href="{cat}/">{cat}</a></li>'.format(
                     cat=category
                 ) for category in jobs.keys()
-            ),
-            articles='\n'.join(
+            ))
+            .replace('{articles}', '\n'.join(
                 '<li><a href="{ent}.html">{art} ({cat})</a></li>'.format(
                     ent=entry, art=entry.split('/')[-1], cat=entry.split('/')[-2]
                 ) for entry in index
-            )
-        ))
+            ))
+        )
 
 def generate(wd, jobs):
     # print(jobs)
