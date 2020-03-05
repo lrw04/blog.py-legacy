@@ -37,10 +37,16 @@ def readcfg(cdir: Path) -> dict:
 
 def mkart(cfg: dict, wd: Path, cat: str, art: str):
     print(cat, art)
+    
     subprocess.run([
         'pandoc', str(wd / 'docs' / cat / m(art)), '--katex',
         '-o', str(wd / 'tmp' / 'tmp.html')
     ])
+    print(' '.join([
+        'pandoc', str(wd / 'docs' / cat / m(art)), '--katex',
+        '-o', str(wd / 'tmp' / 'tmp.html')
+    ]))
+
     frag = open(wd / 'tmp' / 'tmp.html', encoding='utf-8').read()
     with open(wd / 'site' / cat / h(art), 'w', encoding='utf-8') as fout:
         fout.write(cfg['doc']
