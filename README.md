@@ -9,8 +9,11 @@ Resulting site will be in `site` of the directory.
 ```
 config/
   category.html         - Template for index of category
+  ci.html               - Template for entries of categories
+  cii.html              - Template for entries of articles on the category page
   document.html         - Template for one article
   home.html             - Template for home page
+  ii.html               - Template for entries of articles on home page
   name.txt              - Title of blog
 docs/
   <categories>/
@@ -28,9 +31,19 @@ static/                 - Static files, will be present in ../static
  - `{name}`: content of `config/name.txt`, stripped;
  - `{category}`: name of category;
  - `{title}`: title of article;
- - `{md}`: Markdown source.
+ - `{html}`: HTML compiled from Markdown.
  
 #### `home.html`
  - `{name}`: content of `config/name.txt`, stripped;
  - `{categories}`: list of links to category indexes;
  - `{articles}`: list of links to articles.
+
+#### `ci.html`
+ - `{cat}`: name of category.
+
+#### `cii.html`
+ - `{art}`: name of article.
+
+#### `ii.html`
+ - `{art}`: name of article;
+ - `{cat}`: name of category.

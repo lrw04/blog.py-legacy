@@ -1,106 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{name} - {title}</title>
-    <script>window.texme = { style: 'none' }</script>
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
-    <style>
-        #topBtn {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Fixed/sticky position */
-            bottom: 20px;
-            /* Place the button at the bottom of the page */
-            right: 30px;
-            /* Place the button 30px from the right */
-            z-index: 99;
-            /* Make sure it does not overlap */
-            border: none;
-            /* Remove borders */
-            outline: none;
-            /* Remove outline */
-            background-color: #7f7f7f;
-            /* Set a background color */
-            color: black;
-            /* Text color */
-            cursor: pointer;
-            /* Add a mouse pointer on hover */
-            padding: 15px;
-            /* Some padding */
-            border-radius: 10px;
-            /* Rounded corners */
-            font-size: 18px;
-            /* Increase font size */
-        }
-
-        #topBtn:hover {
-            background-color: #3f3f3f;
-            /* Add a dark-grey background on hover */
-        }
-
-        em {
-            font-style: normal;
-            font-family: KaiTi, STKaiti;
-        }
-
-        body {
-            margin: 10px auto;
-            min-width: 780px;
-            max-width: 1024px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta name="Description" content="{title} ({category}) at blog of {name}.">
+    <title>{name} - {category} - {title}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
+    <script>document.addEventListener("DOMContentLoaded", function () {
+            var mathElements = document.getElementsByClassName("math");
+            for (var i = 0; i < mathElements.length; i++) {
+                var texText = mathElements[i].firstChild;
+                if (mathElements[i].tagName == "SPAN") {
+                    katex.render(texText.data, mathElements[i], {
+                        displayMode: mathElements[i].classList.contains('display'),
+                        throwOnError: false,
+                        fleqn: false
+                    });
+                }
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <style>
+            code{white-space:pre-wrap}span.smallcaps{font-variant:small-caps}span.underline{text-decoration:underline}div.column{display:inline-block;vertical-align:top;width:50%}div.hanging-indent{margin-left:1.5em;text-indent:-1.5em}ul.task-list{list-style:none}pre>code.sourceCode{white-space:pre;position:relative}pre>code.sourceCode>span{display:inline-block;line-height:1.25}pre>code.sourceCode>span:empty{height:1.2em}code.sourceCode>span{color:inherit;text-decoration:inherit}div.sourceCode{margin:1em 0}pre.sourceCode{margin:0}@media screen{div.sourceCode{overflow:auto}}@media print{pre>code.sourceCode{white-space:pre-wrap}pre>code.sourceCode>span{text-indent:-5em;padding-left:5em}}pre.numberSource code{counter-reset:source-line 0}pre.numberSource code>span{position:relative;left:-4em;counter-increment:source-line}pre.numberSource code>span>a:first-child::before{content:counter(source-line);position:relative;left:-1em;text-align:right;vertical-align:baseline;border:none;display:inline-block;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;padding:0 4px;width:4em;color:#aaa}pre.numberSource{margin-left:3em;border-left:1px solid #aaa;padding-left:4px}@media screen{pre>code.sourceCode>span>a:first-child::before{text-decoration:underline}}code span.al{color:red;font-weight:700}code span.an{color:#60a0b0;font-weight:700;font-style:italic}code span.at{color:#7d9029}code span.bn{color:#40a070}code span.cf{color:#007020;font-weight:700}code span.ch{color:#4070a0}code span.cn{color:#800}code span.co{color:#60a0b0;font-style:italic}code span.cv{color:#60a0b0;font-weight:700;font-style:italic}code span.do{color:#ba2121;font-style:italic}code span.dt{color:#902000}code span.dv{color:#40a070}code span.er{color:red;font-weight:700}code span.fl{color:#40a070}code span.fu{color:#06287e}code span.in{color:#60a0b0;font-weight:700;font-style:italic}code span.kw{color:#007020;font-weight:700}code span.op{color:#666}code span.ot{color:#007020}code span.pp{color:#bc7a00}code span.sc{color:#4070a0}code span.ss{color:#b68}code span.st{color:#4070a0}code span.va{color:#19177c}code span.vs{color:#4070a0}code span.wa{color:#60a0b0;font-weight:700;font-style:italic}
+            #topBtn {
+                display: none;
+                position: fixed;
+                bottom: 20px;
+                right: 30px;
+                z-index: 99;
+                border: none;
+                outline: none;
+                background-color: #7f7f7f;
+                color: black;
+                cursor: pointer;
+                padding: 15px;
+                border-radius: 10px;
+                font-size: 18px;
+            }
+    
+            #topBtn:hover {
+                background-color: #3f3f3f;
+            }
+    
+            em {
+                font-style: normal;
+                font-family: KaiTi, STKaiti;
+            }
+    
+            body {
+                margin: 10px auto;
+                max-width: 1024px;
+            }
+    
+        </style>
 </head>
 
-<body>
-    <p><a href="../">回到首页</a></p>
+<body class="d-flex flex-column">
+    <br>
+    <p><a href="../" class="btn btn-secondary">主页</a></p>
     <p>类别：<a href="../{category}">{category}</a></p>
 
-    <textarea>
-{md}
-    </textarea>
-    <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script>
-    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+    <div class="card">
+        <div class="card-body">
+    {html}
+          
+        </div>
+      </div>
+      <br>
+    <p><a href="../" class="btn btn-secondary">主页</a></p>
+    <button onclick="topFunction()" id="topBtn" title="回到页首">⬆️</button>
+
     <script>
         function topFunction() {
             document.body.scrollTop = 0; // For Safari
             document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
         }
-        function waitForElementToDisplay(selector, time) {
-            if (document.querySelector(selector) != null) {
-                document.body.insertAdjacentHTML('beforeend', "<a href=\"../\">回到首页</a> <a href=\"#\">回到页首</a>\n <button onclick=\"topFunction()\" id=\"topBtn\" title=\"回到页首\">⬆️</button> ");
-                document.querySelectorAll('pre code').forEach((block) => {
-                    hljs.highlightBlock(block);
-                });
-                //Get the button:
-                mybutton = document.getElementById("topBtn");
-
-                // When the user scrolls down 20px from the top of the document, show the button
-                window.onscroll = function () { scrollFunction() };
-
-                function scrollFunction() {
-                    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                        mybutton.style.display = "block";
-                    } else {
-                        mybutton.style.display = "none";
-                    }
-                }
-
-                // When the user clicks on the button, scroll to the top of the document
-
-                return;
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
             } else {
-                setTimeout(function () {
-                    waitForElementToDisplay(selector, time);
-                }, time);
+                mybutton.style.display = "none";
             }
         }
-        waitForElementToDisplay('main', 10);
+        //Get the button:
+        mybutton = document.getElementById("topBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
     </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

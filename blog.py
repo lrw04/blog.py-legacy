@@ -1,138 +1,110 @@
-from pathlib import Path
-import os
-import sys
+import subprocess
 import shutil
+import sys
+import os
+from pathlib import Path
 
-def grabjobs(wd):
+
+def m(s): return s + '.md'
+
+
+def h(s): return s + '.html'
+
+
+def search(dir: Path) -> dict:
     jobs = {}
-    for category in wd.iterdir():
-        if not category.is_dir(): continue
-        jobs[category.parts[-1]] = []
+    for category in dir.iterdir():
+        if not category.is_dir():
+            continue
+        jobs[category.name] = []
         for article in category.iterdir():
-            if article.parts[-1][-3:] == '.md':
-                jobs[category.parts[-1]].append(article.parts[-1][:-3])
+            if article.suffix == '.md':
+                jobs[category.name].append(article.name[:-3])
     return jobs
 
-def readcfg(pth):
+
+def readcfg(cdir: Path) -> dict:
     return {
-        'home': open(pth / 'home.html', encoding='utf-8').read(),
-        'category': open(pth / 'category.html', encoding='utf-8').read(),
-        'document': open(pth / 'document.html', encoding='utf-8').read(),
-        'name': open(pth / 'name.txt', encoding='utf-8').read().strip()
+        'home': open(cdir / 'home.html', encoding='utf-8').read(),
+        'cat': open(cdir / 'category.html', encoding='utf-8').read(),
+        'doc': open(cdir / 'document.html', encoding='utf-8').read(),
+        'name': open(cdir / 'name.txt', encoding='utf-8').read().strip(),
+        'cii': open(cdir / 'cii.html', encoding='utf-8').read(),
+        'ii': open(cdir / 'ii.html', encoding='utf-8').read(),
+        'ci': open(cdir / 'ci.html', encoding='utf-8').read()
     }
 
-# Fix non-standard titles
-def prep(s):
-    r = ''
-    doconv = True
-    for line in s.splitlines():
-        if len(line) > 2 and line[:3] == '```':
-            doconv = not doconv
-        if len(line) == 0 or not doconv:
-            r += line + '\n'
-            continue
-        if line[0] != '#': r += line
-        else:
-            res = 0
-            for i in range(7):
-                if line[i] != '#':
-                    res = i
-                    break
-            r += line[:res] + ' ' + line[res:]
-        r += '\n'
-    return r
 
-def cvtarticle(cfg, src, dst, category, title):
-    print('{cat}/{art}.html'.format(cat=category, art=title))
-    # print(cfg['document'])
-    with open(dst, 'w', encoding='utf-8') as fout:
-        # fout.write(cfg['document'].format(
-        #     name=cfg['name'],
-        #     title=title,
-        #     category=category,
-        #     md=prep(open(src, encoding='utf-8').read())
-        # ))
-        fout.write(cfg['document']
-            .replace('{name}', cfg['name'])
-            .replace('{title}', title)
-            .replace('{category}', category)
-            .replace('{md}', prep(open(src, encoding='utf-8').read()))
-        )
+def mkart(cfg: dict, wd: Path, cat: str, art: str):
+    print(cat, art)
+    subprocess.run([
+        'pandoc', str(wd / 'docs' / cat / m(art)), '--katex',
+        '-o', str(wd / 'tmp' / 'tmp.html')
+    ])
+    frag = open(wd / 'tmp' / 'tmp.html', encoding='utf-8').read()
+    with open(wd / 'site' / cat / h(art), 'w', encoding='utf-8') as fout:
+        fout.write(cfg['doc']
+                   .replace('{name}', cfg['name'])
+                   .replace('{title}', art)
+                   .replace('{category}', cat)
+                   .replace('{html}', frag)
+                   )
 
-def makecatindex(wd, cfg, category, articles):
-    print('{cat}/index.html'.format(cat=category))
-    with open(wd / 'site' / category / 'index.html', 'w', encoding='utf-8') as f:
-        f.write(cfg['category']#.format(
-            # name=cfg['name'],
-            # category=category,
-            # articles='\n'.join([
-            #     '<li><a href="{art}.html">{art}</a></li>'.format(
-            #         art=article
-            #     ) for article in articles
-            # ])
-            .replace('{name}', cfg['name'])
-            .replace('{category}', category)
-            .replace('{articles}', '\n'.join([
-                '<li><a href="{art}.html">{art}</a></li>'.format(
-                    art=article
-                ) for article in articles
-            ])
-        ))
 
-def makeindex(wd, cfg, jobs, index):
-    print('index.html')
-    index.sort(key=lambda ent: (wd / 'docs' / (ent + '.md')).stat().st_mtime, reverse=True)
-    with open(wd / 'site' / 'index.html', 'w', encoding='utf-8') as f:
-        f.write(cfg['home']#.format(
-            # name=cfg['name'],
-            # categories='\n'.join(
-            #     '<li><a href="{cat}/">{cat}</a></li>'.format(
-            #         cat=category
-            #     ) for category in jobs.keys()
-            # ),
-            # articles='\n'.join(
-            #     '<li><a href="{ent}.html">{art} ({cat})</a></li>'.format(
-            #         ent=entry, art=entry.split('/')[-1], cat=entry.split('/')[-2]
-            #     ) for entry in index
-            # )
-            .replace('{name}', cfg['name'])
-            .replace('{categories}', '\n'.join(
-                '<li><a href="{cat}/">{cat}</a></li>'.format(
-                    cat=category
-                ) for category in jobs.keys()
-            ))
-            .replace('{articles}', '\n'.join(
-                '<li><a href="{ent}.html">{art} ({cat})</a></li>'.format(
-                    ent=entry, art=entry.split('/')[-1], cat=entry.split('/')[-2]
-                ) for entry in index
-            ))
-        )
+def mkcat(cfg: dict, wd: Path, cat: str, arts: list):
+    print(cat)
+    with open(wd / 'site' / cat / 'index.html', 'w', encoding='utf-8') as fout:
+        fout.write(cfg['cat']
+                   .replace('{name}', cfg['name'])
+                   .replace('{category}', cat)
+                   .replace('{articles}', '\n'.join([
+                       cfg['cii'].replace('{art}', art) for art in arts
+                   ]))
+                   )
 
-def generate(wd, jobs):
-    # print(jobs)
+
+def mkindex(cfg: dict, wd: Path, jobs: dict):
+    print('/')
+    entries = []
+    for category in jobs:
+        for article in jobs[category]:
+            entries.append((category, article))
+    entries.sort(key=lambda ent: (wd / 'docs' / ent[0] / m(ent[1])
+                                  ).stat().st_mtime, reverse=True)
+    with open(wd / 'site' / 'index.html', 'w', encoding='utf-8') as fout:
+        fout.write(cfg['home']
+                   .replace('{name}', cfg['name'])
+                   .replace('{categories}', '\n'.join([
+                       cfg['ci'].replace('{cat}', cat) for cat in jobs.keys()]))
+                   .replace('{articles}', '\n'.join([
+                       cfg['ii'].replace('{cat}', cat).replace('{art}', art)
+                       for cat, art in entries
+                   ]))
+                   )
+
+
+def gen(wd: Path):
+    jobs = search(wd / 'docs')
     cfg = readcfg(wd / 'config')
-    site = wd / 'site'
-    site.mkdir(parents=True, exist_ok=True)
-    index = []
+    (wd / 'site').mkdir(parents=True, exist_ok=True)
+    (wd / 'tmp').mkdir(parents=True, exist_ok=True)
     for category in jobs:
         articles = jobs[category]
-        # print(category)
-        cwd = site / category
-        cwd.mkdir(parents=True, exist_ok=True)
+        (wd / 'site' / category).mkdir(parents=True, exist_ok=True)
         for article in articles:
-            cvtarticle(cfg, wd / 'docs' / category / (article + '.md'), wd / 'site' / category / (article + '.html'), category, article)
-        makecatindex(wd, cfg, category, articles)
-        index += [category + '/' + article for article in articles]
-    makeindex(wd, cfg, jobs, index)
+            mkart(cfg, wd, category, article)
+        mkcat(cfg, wd, category, articles)
+    mkindex(cfg, wd, jobs)
     shutil.copytree(wd / 'static', wd / 'site' / 'static', dirs_exist_ok=True)
+
 
 def main():
     try:
         wd = Path(sys.argv[1])
-    except:
-        wd = Path(input('Drag blog folder: '))
-    jobs = grabjobs(wd / 'docs')
-    generate(wd, jobs)
-    
+    except IndexError:
+        wd = Path(input('Blog directory: ').strip())
+    gen(wd)
+
+
 if __name__ == '__main__':
     main()
