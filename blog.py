@@ -40,11 +40,11 @@ def mkart(cfg: dict, wd: Path, cat: str, art: str):
     
     subprocess.run([
         'pandoc', str(wd / 'docs' / cat / m(art)), '--katex',
-        '-o', str(wd / 'tmp' / 'tmp.html')
+        '--no-highlight', '-o', str(wd / 'tmp' / 'tmp.html')
     ])
     print(' '.join([
         'pandoc', str(wd / 'docs' / cat / m(art)), '--katex',
-        '-o', str(wd / 'tmp' / 'tmp.html')
+        '--no-highlight', '-o', str(wd / 'tmp' / 'tmp.html')
     ]))
 
     frag = open(wd / 'tmp' / 'tmp.html', encoding='utf-8').read()
