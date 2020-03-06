@@ -5,6 +5,8 @@ A static blog generator.
 Download `blog.py` from repository. Run `blog.py`. Drag folder with files to the terminal window and press enter.
 Resulting site will be in `site` of the directory.
 
+Depends on `pandoc`.
+
 ### Folder configuration
 ```
 config/
