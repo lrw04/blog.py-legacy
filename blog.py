@@ -92,6 +92,7 @@ def mkindex(cfg: dict, wd: Path, jobs: dict):
 def gen(wd: Path):
     jobs = search(wd / 'docs')
     cfg = readcfg(wd / 'config')
+    shutil.rmtree(wd / 'site')
     (wd / 'site').mkdir(parents=True, exist_ok=True)
     (wd / 'tmp').mkdir(parents=True, exist_ok=True)
     for category in jobs:
@@ -102,6 +103,7 @@ def gen(wd: Path):
         mkcat(cfg, wd, category, articles)
     mkindex(cfg, wd, jobs)
     shutil.copytree(wd / 'static', wd / 'site' / 'static', dirs_exist_ok=True)
+    shutil.rmtree(wd / 'tmp')
 
 
 def main():
