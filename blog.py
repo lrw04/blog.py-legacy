@@ -11,6 +11,9 @@ def m(s): return s + '.md'
 def h(s): return s + '.html'
 
 
+def t(s): return s + '.txt'
+
+
 def search(dir: Path) -> dict:
     jobs = {}
     for category in dir.iterdir():
@@ -37,7 +40,7 @@ def readcfg(cdir: Path) -> dict:
 
 def mkart(cfg: dict, wd: Path, cat: str, art: str):
     print(cat, art)
-    
+
     subprocess.run([
         'pandoc', str(wd / 'docs' / cat / m(art)), '--katex',
         '--no-highlight', '-o', str(wd / 'tmp' / 'tmp.html')
@@ -69,14 +72,17 @@ def mkcat(cfg: dict, wd: Path, cat: str, arts: list):
                    )
 
 
+def gettime(ent: tuple):
+    return open(ent[2] / 'docs' / ent[0] / t(ent[1]), encoding='utf-8').read().strip()
+
+
 def mkindex(cfg: dict, wd: Path, jobs: dict):
     print('/')
     entries = []
     for category in jobs:
         for article in jobs[category]:
-            entries.append((category, article))
-    entries.sort(key=lambda ent: (wd / 'docs' / ent[0] / m(ent[1])
-                                  ).stat().st_mtime, reverse=True)
+            entries.append((category, article, wd))
+    entries.sort(key=gettime, reverse=True)
     with open(wd / 'site' / 'index.html', 'w', encoding='utf-8') as fout:
         fout.write(cfg['home']
                    .replace('{name}', cfg['name'])
@@ -84,7 +90,7 @@ def mkindex(cfg: dict, wd: Path, jobs: dict):
                        cfg['ci'].replace('{cat}', cat) for cat in jobs.keys()]))
                    .replace('{articles}', '\n'.join([
                        cfg['ii'].replace('{cat}', cat).replace('{art}', art)
-                       for cat, art in entries
+                       for cat, art, _ in entries
                    ]))
                    )
 
@@ -110,7 +116,10 @@ def main():
     try:
         wd = Path(sys.argv[1])
     except IndexError:
-        wd = Path(input('Blog directory: ').strip())
+        if Path('./docs').exists():
+            wd = Path('.')
+        else:
+            wd = Path(input('Blog directory: ').strip())
     gen(wd)
 
 
