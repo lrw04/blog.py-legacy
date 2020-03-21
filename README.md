@@ -2,8 +2,10 @@
 A static blog generator.
 
 ## Usage
-Download `blog.py` from repository. Run `blog.py`. Drag folder with files to the terminal window and press enter.
+ 1. Download `blog.py` from repository. Run `blog.py`. Drag folder with files to the terminal window and press enter.
 Resulting site will be in `site` of the directory.
+
+ 1. Copy `blog.py` and `new.py` to blog directory, compile by running `blog.py` and adding entries by running `new.py`.
 
 Depends on `pandoc`.
 
@@ -20,8 +22,14 @@ config/
 docs/
   <categories>/
     <articles>.md
+    <articles>.txt      - Timestamp of article, can be in any format
 static/                 - Static files, will be present in ../static
 ```
+
+#### Timestamping
+Articles are expected to be timestamped in a `.txt` file with the same name.
+
+The default format used in `new.py` is `priority(2) year(4) month(2) day(2)`.
 
 ### Templating
 #### `category.html`
