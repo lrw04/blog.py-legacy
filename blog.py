@@ -108,7 +108,9 @@ def gen(wd: Path):
             mkart(cfg, wd, category, article)
         mkcat(cfg, wd, category, articles)
     mkindex(cfg, wd, jobs)
-    shutil.copytree(wd / 'static', wd / 'site' / 'static', dirs_exist_ok=True)
+    try: shutil.rmtree(wd / 'site' / 'static')
+    except: pass
+    shutil.copytree(wd / 'static', wd / 'site' / 'static')
     shutil.rmtree(wd / 'tmp')
 
 
