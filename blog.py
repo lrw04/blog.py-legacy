@@ -67,7 +67,7 @@ def mkcat(cfg: dict, wd: Path, cat: str, arts: list):
                    .replace('{name}', cfg['name'])
                    .replace('{category}', cat)
                    .replace('{articles}', '\n'.join([
-                       cfg['cii'].replace('{art}', art) for art in arts
+                       cfg['cii'].replace('{art}', art) for art in sorted(arts)
                    ]))
                    )
 
