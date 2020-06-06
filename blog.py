@@ -38,7 +38,7 @@ def readcfg(cdir: Path) -> dict:
     }
 
 
-def mkart(cfg: dict, wd: Path, cat: str, art: str):
+def mkart(cfg: dict, wd: Path, cat: str, art: str, jobs: dict):
     print(cat, art)
 
     subprocess.run([
@@ -57,10 +57,12 @@ def mkart(cfg: dict, wd: Path, cat: str, art: str):
                    .replace('{title}', art)
                    .replace('{category}', cat)
                    .replace('{html}', frag)
+                   .replace('{categories}', '\n'.join([
+                       cfg['ci'].replace('{cat}', cat) for cat in sorted(jobs.keys())]))
                    )
 
 
-def mkcat(cfg: dict, wd: Path, cat: str, arts: list):
+def mkcat(cfg: dict, wd: Path, cat: str, arts: list, jobs: dict):
     print(cat)
     with open(wd / 'site' / cat / 'index.html', 'w', encoding='utf-8') as fout:
         fout.write(cfg['cat']
@@ -69,6 +71,8 @@ def mkcat(cfg: dict, wd: Path, cat: str, arts: list):
                    .replace('{articles}', '\n'.join([
                        cfg['cii'].replace('{art}', art) for art in sorted(arts)
                    ]))
+                   .replace('{categories}', '\n'.join([
+                       cfg['ci'].replace('{cat}', cat) for cat in sorted(jobs.keys())]))
                    )
 
 
@@ -87,7 +91,7 @@ def mkindex(cfg: dict, wd: Path, jobs: dict):
         fout.write(cfg['home']
                    .replace('{name}', cfg['name'])
                    .replace('{categories}', '\n'.join([
-                       cfg['ci'].replace('{cat}', cat) for cat in jobs.keys()]))
+                       cfg['ci'].replace('{cat}', cat) for cat in sorted(jobs.keys())]))
                    .replace('{articles}', '\n'.join([
                        cfg['ii'].replace('{cat}', cat).replace('{art}', art)
                        for cat, art, _ in entries
@@ -105,8 +109,8 @@ def gen(wd: Path):
         articles = jobs[category]
         (wd / 'site' / category).mkdir(parents=True, exist_ok=True)
         for article in articles:
-            mkart(cfg, wd, category, article)
-        mkcat(cfg, wd, category, articles)
+            mkart(cfg, wd, category, article, jobs)
+        mkcat(cfg, wd, category, articles, jobs)
     mkindex(cfg, wd, jobs)
     try: shutil.rmtree(wd / 'site' / 'static')
     except: pass
