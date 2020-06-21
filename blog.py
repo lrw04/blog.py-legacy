@@ -67,10 +67,10 @@ def mkcat(cfg: dict, wd: Path, cat: str, arts: list, jobs: dict):
     with open(wd / 'site' / cat / 'index.html', 'w', encoding='utf-8') as fout:
         fout.write(cfg['cat']
                    .replace('{name}', cfg['name'])
-                   .replace('{category}', cat)
                    .replace('{articles}', '\n'.join([
                        cfg['cii'].replace('{art}', art) for art in sorted(arts)
                    ]))
+                   .replace('{category}', cat)
                    .replace('{categories}', '\n'.join([
                        cfg['ci'].replace('{cat}', cat) for cat in sorted(jobs.keys())]))
                    )
