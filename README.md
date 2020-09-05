@@ -35,18 +35,21 @@ The default format used in `new.py` is `priority(2) year(4) month(2) day(2)`.
 #### `category.html`
  - `{name}`: content of `config/name.txt`, stripped;
  - `{category}`: name of category;
- - `{articles}`: list of links to articles under this category (should be in `<ul>...</ul>`).
+ - `{articles}`: list of links to articles under this category (should be in `<ul>...</ul>`);
+ - `{categories}`: list of all categories.
  
 #### `document.html`
  - `{name}`: content of `config/name.txt`, stripped;
  - `{category}`: name of category;
  - `{title}`: title of article;
- - `{html}`: HTML compiled from Markdown.
+ - `{html}`: HTML compiled from Markdown;
+ - `{categories}`: list of all categories.
  
 #### `home.html`
  - `{name}`: content of `config/name.txt`, stripped;
  - `{categories}`: list of links to category indexes;
- - `{articles}`: list of links to articles.
+ - `{articles}`: list of links to articles;
+ - `{categories}`: list of all categories.
 
 #### `ci.html`
  - `{cat}`: name of category.
